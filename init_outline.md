@@ -3,6 +3,7 @@
 ## Table of Contents
 1. Core Features
 2. Sub Features
+3. Coding Languages
 
 ## Core Features
 - User Authentication
@@ -25,3 +26,7 @@
   - Manage user accounts and transactions
  
 ## Sub Features
+
+## Coding Languages
+- Frontend: ReactJS
+- Backend: C++
