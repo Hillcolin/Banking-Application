@@ -26,6 +26,9 @@
   - Manage user accounts and transactions
  
 ## Sub Features
+- Financial Advisor
+- blockchain
+- check validating
 
 ## Coding Languages
 - Frontend: ReactJS
