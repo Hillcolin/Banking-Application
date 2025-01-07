@@ -3,8 +3,6 @@
 | **Team Number** | **First Name** | **Last Name** | **Email** | **Week** | **TA** | **TA Email** |
 |-----------------|----------------|---------------|-----------|----------|--------|--------------|
 | Team 46 | Aryan | Farhang Pour | afarha2@uwo.ca | Even Weeks | Sujoy Datta | sdatta46@uwo.ca |
-| Team 46 | Alexander | Vong | avong5@uwo.ca | Even Weeks | Sujoy Datta | sdatta46@uwo.ca |
-| Team 46 | Bilal | Hachem | bhachem@uwo.ca | Even Weeks | Sujoy Datta | sdatta46@uwo.ca |
 | Team 46 | Colin | Hill | chill232@uwo.ca | Even Weeks | Sujoy Datta | sdatta46@uwo.ca |
 | Team 46 | Eric | Hout | ehout@uwo.ca | Even Weeks | Sujoy Datta | sdatta46@uwo.ca |
 
