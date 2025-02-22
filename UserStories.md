@@ -81,7 +81,7 @@ Confirmation:
 
 ## Deposit functionality (taking in money)
 
-### User Story 1:
+### User Story 1: Transfer Deposits
 
 Card: 
 
@@ -100,6 +100,21 @@ Confirmation:
  - Email notification
 
 2 points
+
+
+### User Story 2: Cash Deposit
+
+Card:
+
+As a customer, I want to deposit money using an ATM
+
+Conversation:
+ - How will the system ensure security during ATM transactions (e.g., PIN verification)?
+ - How will the system handle errors, such as invalid deposits?
+
+Confirmation:
+ - User inserts their card and enters their PIN for authentication.
+ - 
 
 ## Withdrawl Functionality (sending money)
 
@@ -147,7 +162,28 @@ Confirmation:
 3 points
 
 
-## 
+## Password Encryption
+
+### User Story: Secure Password Encryption
+
+Card: 
+
+As a security-conscious bank customer, I want my password to be encrypted so that my account remains secure even if the database is compromised.
+
+Conversation:
+ - What encryption method should we use?
+ - Should we implement additional security measures like salting?
+ - What password complexity requirements should we enforce?
+
+Confirmation:
+ - Passwords are never stored in plaintext in the database
+ - Passwords are hashed using a strong, industry-standard algorithm like bcrypt or Argon2
+ - Each password is salted with a unique, random salt before hashing
+ - Salt is associated with the account in the database
+
+3 points
+
+
 
 
 
