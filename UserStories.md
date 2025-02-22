@@ -156,7 +156,6 @@ As a security-conscious bank customer, I want my password to be encrypted so tha
 Conversation:
  - What encryption method should we use?
  - Should we implement additional security measures like salting?
- - What password complexity requirements should we enforce?
 
 Confirmation:
  - Passwords are never stored in plaintext in the database
@@ -167,6 +166,25 @@ Confirmation:
 3 points
 
 
+## Transaction History Logging
 
+### User Story: Transaction Logging
+
+Card: 
+
+As a customer, I want all my account transactions to be accurately logged and easily accessible so that I can review my financial activity and track my spending.
+
+Conversation:
+ - What details should be included in each transaction log?
+ - How far back should the transaction history be available?
+ - How will the system ensure the integrity and security of the transaction logs?
+ - How can I find a particular transaction
+
+Confirmation:
+ - Every transaction is logged in real-time
+ - Each log entry includes: Date and time of transaction, type, amount, balance after transaction, description, transaction number
+ - sort transactions
+
+4 points
 
 
