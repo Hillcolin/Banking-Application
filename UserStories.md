@@ -124,7 +124,7 @@ Confirmation:
 3 points
 
 
-###User Story 2: Scheduled Recurring Transfers
+### User Story 2: Scheduled Recurring Transfers
 
 Card:
 
