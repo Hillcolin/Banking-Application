@@ -37,8 +37,6 @@ Confirmation:
 1 points
 
 
-
-
 ## Account Balance Inquiry
 
 ### User Story 1: View current account balance
@@ -102,20 +100,6 @@ Confirmation:
 2 points
 
 
-### User Story 2: Cash Deposit
-
-Card:
-
-As a customer, I want to deposit money using an ATM
-
-Conversation:
- - How will the system ensure security during ATM transactions (e.g., PIN verification)?
- - How will the system handle errors, such as invalid deposits?
-
-Confirmation:
- - User inserts their card and enters their PIN for authentication.
- - 
-
 ## Withdrawl Functionality (sending money)
 
 ### User Story 1: Simple Money Transfer
@@ -126,7 +110,6 @@ As a bank customer, I want to transfer money from my account to another person's
 
 Conversation:
  - What information does the user need to provide to initiate a transfer?
- - Should there be limits on transfer amounts?
  - Should there be limits on transfer amounts?
 
 Confirmation:
