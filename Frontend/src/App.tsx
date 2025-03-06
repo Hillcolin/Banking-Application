@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-
+import Login from './components/login';
+import './App.css';
 const App = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     console.log('Making API call to /api/hello');
-    fetch('http://localhost:8080/')
+    fetch('/api')
       .then(response => {
         console.log('Response:', response);
         return response.text();
@@ -19,6 +20,7 @@ const App = () => {
 
   return (
     <div>
+	  <Login />
       <h1>{message}</h1>
     </div>
   );
