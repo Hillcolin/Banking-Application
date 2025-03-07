@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth, googleProvider } from '../config/firebase';
+import { auth, googleProvider, db } from '../config/firebase';
 import { onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 interface AuthContextType {
   currentUser: any;
@@ -24,7 +25,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await createUserInFirestore(user);
+      }
       setCurrentUser(user);
       setLoading(false);
     });
@@ -32,27 +36,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, []);
 
+  const createUserInFirestore = async (user: any) => {
+    const userRef = doc(db, "users", user.uid);
+    try {
+      const userDocSnap = await getDoc(userRef);
+      if (!userDocSnap.exists()) {
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        });
+        console.log("User added to Firestore.");
+      }
+    } catch (error) {
+      console.error("Error adding user to Firestore:", error);
+      alert("Error creating user profile. Please contact support.");
+    }
+  };
+
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      await createUserInFirestore(user);
     } catch (error) {
       console.error('Error signing in with Google:', error);
+      if ((error as any).code === 'auth/popup-closed-by-user') {
+        alert('The popup was closed before completing the sign in.');
+      } else {
+        alert('An error occurred during Google sign in. Please try again.');
+      }
     }
   };
 
   const signInWithEmail = async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const user = result.user;
+      await createUserInFirestore(user);
     } catch (error) {
       console.error('Error signing in with email:', error);
+      if ((error as any).code === 'auth/invalid-credential') {
+        alert('Invalid credentials. Please check your email and password.');
+      } else {
+        alert('An error occurred during email sign in. Please try again.');
+      }
     }
   };
 
   const createAccount = async (email: string, password: string) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      const user = result.user;
+      await createUserInFirestore(user);
     } catch (error) {
       console.error('Error creating account:', error);
+      alert('An error occurred during account creation. Please try again.');
     }
   };
 
