@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/login.css';
 import { useAuth } from '../contexts/authContext';
 
-const Login = () => {
+const login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const { signInWithEmail, signInWithGoogle, createAccount } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setErrorMessage('');
     try {
       if (isCreatingAccount) {
         await createAccount(email, password);
@@ -21,6 +23,11 @@ const Login = () => {
       navigate('/');
     } catch (error) {
       console.error('Error during authentication:', error);
+      if ((error as any).code === 'auth/weak-password') {
+        setErrorMessage('The password is too weak. Please choose a stronger password.');
+      } else {
+        setErrorMessage('An error occurred during authentication. Please try again.');
+      }
     }
   };
 
@@ -30,12 +37,14 @@ const Login = () => {
       navigate('/');
     } catch (error) {
       console.error('Error signing in with Google:', error);
+      setErrorMessage('An error occurred during Google sign in. Please try again.');
     }
   };
 
   return (
     <div className="login-container">
       <h2>{isCreatingAccount ? 'Create Account' : 'Login'}</h2>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email:</label>
@@ -69,4 +78,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default login;
