@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import '../../styles/login.css';
+import { useAuth } from '../contexts/authContext';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signInWithEmail, signInWithGoogle } = useAuth();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle login logic here
-    console.log('Username:', username);
-    console.log('Password:', password);
+    await signInWithEmail(email, password);
+  };
+
+  const handleGoogleSignIn = async () => {
+    await signInWithGoogle();
   };
 
   return (
@@ -17,12 +21,12 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">Email:</label>
           <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -38,8 +42,11 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
+      <button onClick={handleGoogleSignIn} className="google-signin-button">
+        Sign in with Google
+      </button>
     </div>
   );
 };
-
+ 
 export default Login;
