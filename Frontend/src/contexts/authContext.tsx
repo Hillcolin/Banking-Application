@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
+          balance: 100, // Set default balance to 100
         });
         console.log("User added to Firestore.");
       }

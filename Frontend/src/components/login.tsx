@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/login.css';
 import { useAuth } from '../contexts/authContext';
 
-const login = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
@@ -20,10 +20,12 @@ const login = () => {
       } else {
         await signInWithEmail(email, password);
       }
-      navigate('/');
+      navigate('/balance'); // Navigate to balance page upon successful login
     } catch (error) {
       console.error('Error during authentication:', error);
-      if ((error as any).code === 'auth/weak-password') {
+      if ((error as any).code === 'auth/invalid-credential') {
+        setErrorMessage('Invalid credentials. Please check your email and password.');
+      } else if ((error as any).code === 'auth/weak-password') {
         setErrorMessage('The password is too weak. Please choose a stronger password.');
       } else {
         setErrorMessage('An error occurred during authentication. Please try again.');
@@ -34,7 +36,7 @@ const login = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      navigate('/');
+      navigate('/balance'); // Navigate to balance page upon successful login
     } catch (error) {
       console.error('Error signing in with Google:', error);
       setErrorMessage('An error occurred during Google sign in. Please try again.');
@@ -78,4 +80,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
