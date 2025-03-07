@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth, googleProvider } from '../config/firebase.tsx';
-import { onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '../config/firebase';
+import { onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
 
 interface AuthContextType {
   currentUser: any;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
+  createAccount: (email: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,10 +48,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const createAccount = async (email: string, password: string) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error('Error creating account:', error);
+    }
+  };
+
   const value = {
     currentUser,
     signInWithGoogle,
     signInWithEmail,
+    createAccount,
   };
 
   return (

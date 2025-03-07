@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/landingPage.css';
+import '../../styles/landingPage.css';
 
-const landingPage: React.FC = () => {
+const LandingPage: React.FC = () => {
   return (
     <div className="landing-page">
       <header className="landing-header">
@@ -25,4 +25,4 @@ const landingPage: React.FC = () => {
   );
 };
 
-export default landingPage;
+export default LandingPage;
