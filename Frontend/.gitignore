@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 
 # Config directory
-src/config/
 .env
