@@ -4,7 +4,7 @@ This guide explains how to run the project, including starting the backend (C++ 
 
 ## Prerequisites
 
-- **Backend**: Ensure you have a C++ compiler (e.g., `g++`) and the necessary libraries installed.
+- **Backend**: Ensure you have a C++ compiler (e.g., `g++`), CMake, and the necessary libraries installed.
 - **Frontend**: Ensure you have Node.js and npm installed.
 
 ## Backend (C++ Crow Server)
@@ -16,14 +16,19 @@ This guide explains how to run the project, including starting the backend (C++ 
     cd path/to/backend
     ```
 
-3. **Compile the Backend**:
+3. **Configure the Build with CMake**:
     ```sh
-    g++ -o backend src/main.cpp -lcrow -lboost_system -lpthread
+    cmake -B build -DCMAKE_TOOLCHAIN_FILE="vcpkg\scripts\buildsystems\vcpkg.cmake"
     ```
 
-4. **Run the Backend**:
+4. **Build the Backend**:
     ```sh
-    ./backend
+    cmake --build build
+    ```
+
+5. **Run the Backend**:
+    ```sh
+    build/Debug/MyCrowApp.exe
     ```
 
     The backend server should now be running on `http://localhost:8080`.
