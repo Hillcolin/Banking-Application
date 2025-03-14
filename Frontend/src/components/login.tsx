@@ -16,16 +16,22 @@ const Login = () => {
     setErrorMessage('');
     try {
       if (isCreatingAccount) {
-        await createAccount(email, password);
+        await createAccount(email, password); // Create an account
       } else {
-        await signInWithEmail(email, password);
+        await signInWithEmail(email, password); // Sign in with email/password
       }
-      navigate('/balance'); // Navigate to balance page upon successful login
-    } catch (error) {
+      navigate('/balance'); // Navigate to balance page upon successful login or account creation
+    } catch (error: any) {
       console.error('Error during authentication:', error);
-      if ((error as any).code === 'auth/invalid-credential') {
-        setErrorMessage('Invalid credentials. Please check your email and password.');
-      } else if ((error as any).code === 'auth/weak-password') {
+      if (error.code === 'auth/invalid-email') {
+        setErrorMessage('Invalid email address. Please check your email.');
+      } else if (error.code === 'auth/user-not-found') {
+        setErrorMessage('No user found with this email. Please create an account.');
+      } else if (error.code === 'auth/wrong-password') {
+        setErrorMessage('Incorrect password. Please try again.');
+      } else if (error.code === 'auth/email-already-in-use') {
+        setErrorMessage('This email is already in use. Please log in.');
+      } else if (error.code === 'auth/weak-password') {
         setErrorMessage('The password is too weak. Please choose a stronger password.');
       } else {
         setErrorMessage('An error occurred during authentication. Please try again.');
@@ -35,11 +41,11 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      await signInWithGoogle(); // Sign in with Google
       navigate('/balance'); // Navigate to balance page upon successful login
     } catch (error) {
       console.error('Error signing in with Google:', error);
-      setErrorMessage('An error occurred during Google sign in. Please try again.');
+      setErrorMessage('An error occurred during Google sign-in. Please try again.');
     }
   };
 
