@@ -1,4 +1,4 @@
 # .gitignore
 .env
 Frontend/.env
-crow/.env
+crow/
