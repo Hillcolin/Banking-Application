@@ -23,6 +23,6 @@ jobs:
       run: |
         git add -A
         git commit -m "Daily push"
-        git push origin "Colin's Branch" # Push to the specific branch
+        git push origin "Colin's-Branch" # Push to the specific branch
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
