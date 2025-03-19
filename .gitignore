@@ -1,6 +1,6 @@
 # .gitignore
 .env
 Frontend/.env
+Backendd/.env
 crow/
-id_ed25519
-id_ed25519.pub
+vcpkg

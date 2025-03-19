@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useAuth } from '../contexts/authContext';
-import { doc, getDoc, collection, query, limit, getDocs } from 'firebase/firestore';
-import { db } from '../../config/firebase';
 import { Link } from 'react-router-dom';
 import '../../styles/balance.css';
 
@@ -34,13 +33,11 @@ const BalancePage: React.FC = () => {
       }
 
       try {
-        // Fetch user data
-        const userRef = doc(db, 'users', currentUser.uid);
-        const userDoc = await getDoc(userRef);
+        // Fetch user data from Crow backend
+        const userResponse = await axios.get(`/api/user/${currentUser.uid}`);
+        const userData = userResponse.data;
 
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-
+        if (userData) {
           // Set accounts
           if (userData.accounts && Array.isArray(userData.accounts)) {
             setAccounts(userData.accounts);
@@ -48,17 +45,16 @@ const BalancePage: React.FC = () => {
             setAccounts([]);
           }
 
-          // Fetch recent transactions
-          const transactionsRef = collection(db, 'users', currentUser.uid, 'transactions');
-          const recentTransactionsQuery = query(transactionsRef, limit(5));
-          const transactionSnapshot = await getDocs(recentTransactionsQuery);
-          const transactions = transactionSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-          })) as Transaction[];
+          // Fetch recent transactions from Crow backend
+          const transactionsResponse = await axios.get(`/api/user/${currentUser.uid}/transactions`);
+          const transactions = transactionsResponse.data as Transaction[];
           setRecentTransactions(transactions);
         } else {
-          setError('User data not found.');
+          // If no user data, set all account balances to 0
+          setAccounts([
+            { id: '1', type: 'Checking', balance: 0 },
+            { id: '2', type: 'Savings', balance: 0 },
+          ]);
         }
       } catch (err) {
         console.error('Error fetching user data:', err);
