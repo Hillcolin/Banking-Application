@@ -1,5 +1,6 @@
 /* General Page Styling */
 body {
+    overflow-y: scroll; /* Allow vertical scrolling */
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #ffffff; /* White background */
@@ -8,6 +9,7 @@ body {
   
   /* Main Container */
   .landing-page {
+    
     max-width: 800px; /* Limit the width for better readability */
     margin: 0 auto; /* Center the content */
     padding: 20px;

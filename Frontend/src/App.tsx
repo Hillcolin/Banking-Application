@@ -4,6 +4,7 @@ import Login from './components/login';
 import LandingPage from './components/landingPage';
 import BalancePage from './components/BalancePage';
 import Terms from './components/terms';
+import PrivacyPolicy from './components/privacyPolicy';
 import { useAuth } from './contexts/authContext';
 import { AuthProvider } from './contexts/authContext';
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
 
           {/* Protected Routes */}
           <Route
