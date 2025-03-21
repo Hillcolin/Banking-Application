@@ -54,6 +54,7 @@ const BalancePage: React.FC = () => {
           setAccounts([
             { id: '1', type: 'Checking', balance: 0 },
             { id: '2', type: 'Savings', balance: 0 },
+            { id: '3', type: 'Credit', balance: 0 },
           ]);
         }
       } catch (err) {

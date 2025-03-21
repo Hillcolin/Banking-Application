@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, Firestore } from "firebase/firestore";
 import { db } from "../../config/firebase"; // Your Firebase config file
 
 const fetchOrInitializeUserData = async (uid: string) => {
@@ -9,7 +9,8 @@ const fetchOrInitializeUserData = async (uid: string) => {
     if (userDoc.exists()) {
       // If user data exists, return it
       return userDoc.data();
-    } else {
+    } 
+    else {
       // If no user data exists, initialize with default values
       const defaultData = {
         accounts: [

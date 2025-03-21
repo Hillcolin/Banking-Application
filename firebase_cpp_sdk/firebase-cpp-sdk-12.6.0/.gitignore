@@ -1,0 +1,88 @@
+.DS_Store
+
+# CMake "user presets" files
+# https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html
+CMakeUserPresets.json
+
+# Python byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+### Gradle ###
+.gradle
+**/build/
+**/.externalNativeBuild/
+**/.cxx/
+
+### IDE generated files
+.vscode/
+
+# Unencrypted secret files
+google-services.json
+GoogleService-Info.plist
+uri_prefix.txt
+server_key.txt
+gcs_key_file.json
+
+# Folders for cmake/test output
+*_build/
+cmake-build-*/
+testing/test_framework/external/
+CMakeFiles/
+CMakeCache.txt
+
+# XCode user specific folders
+**/xcuserdata/
+
+# Local gradle properties
+**/local.properties
+
+# Auto generates files for integration tests
+**/integration_test/download_googletest.py
+**/integration_test/external
+**/integration_test/src/android/
+**/integration_test/src/app_framework.cc
+**/integration_test/src/app_framework.h
+**/integration_test/src/desktop/
+**/integration_test/src/empty.swift
+**/integration_test/src/firebase_test_framework.cc
+**/integration_test/src/firebase_test_framework.h
+**/integration_test/src/ios/
+
+# Auto generated files for firestore internal tests
+firestore/integration_test_internal/download_googletest.py
+firestore/integration_test_internal/external
+firestore/integration_test_internal/src/android/android_app_framework.cc
+firestore/integration_test_internal/src/android/android_firebase_test_framework.cc
+firestore/integration_test_internal/src/app_framework.cc
+firestore/integration_test_internal/src/app_framework.h
+firestore/integration_test_internal/src/desktop/desktop_app_framework.cc
+firestore/integration_test_internal/src/desktop/desktop_firebase_test_framework.cc
+firestore/integration_test_internal/src/empty.swift
+firestore/integration_test_internal/src/firebase_test_framework.cc
+firestore/integration_test_internal/src/firebase_test_framework.h
+firestore/integration_test_internal/src/ios/ios_app_framework.mm
+firestore/integration_test_internal/src/ios/ios_firebase_test_framework.mm
+firestore/integration_test_internal/src/ios/.clang-format
+firestore/integration_test_internal/src/android/java/com/google/firebase/example
+firestore/integration_test_internal/Podfile.lock
+firestore/integration_test_internal/Pods
+firestore/integration_test_internal/integration_test.xcworkspace/contents.xcworkspacedata
+firestore/integration_test_internal/integration_test.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+firestore/integration_test_internal/integration_test.xcodeproj/xcshareddata/xcschemes/integration_test.xcscheme
+download_googletest.py
+external
+src/android/java
+src/android/android_app_framework.cc
+src/android/android_firebase_test_framework.cc
+src/app_framework.h
+src/app_framework.cc
+src/desktop/desktop_app_framework.cc
+src/desktop/desktop_firebase_test_framework.cc
+src/empty.swift
+src/firebase_test_framework.cc
+src/firebase_test_framework.h
+src/ios/.clang-format
+src/ios/ios_app_framework.mm
+src/ios/ios_firebase_test_framework.mm

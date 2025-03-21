@@ -120,9 +120,9 @@ const LandingPage: React.FC = () => {
       <footer className="landing-footer">
         <div className="footer-links">
           <Link to="/terms" className="tos-button" role="button">Terms of Service</Link>
-          <Link to="/privacy" className="privacy-button" role="button">Privacy Policy</Link>
+          <Link to="/privacyPolicy" className="tos-button" role="button">Privacy Policy</Link>
         </div>
-        <p>&copy; {new Date().getFullYear()} Banking Application. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} ACE Banks. All rights reserved.</p>
       </footer>
     </div>
   );

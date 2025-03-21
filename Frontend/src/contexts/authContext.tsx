@@ -8,7 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup 
 } from 'firebase/auth';
-import { auth } from '../../config/firebase'; // Import your Firebase config
+import { auth } from '../../config/firebaseConfig'; // Import your Firebase config
 
 interface AuthContextProps {
   currentUser: any;
