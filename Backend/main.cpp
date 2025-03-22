@@ -1,12 +1,13 @@
+#include "asio_compat.h"  // Add this before crow_all.h
 #include "crow_all.h"
-#include <firebase-cpp-sdk/app.h>
+#include <firebase/app.h>
 #include <firebase/auth.h>
 #include <firebase/database.h>
 #include <unordered_map>
 #include <vector>
 #include <string>
 #include <iostream>
-#include "dotenv.h" // Include dotenv-cpp header
+#include "dotenv.h" // Ensure this header is included correctly
 #include "User.h"
 #include "Account.h"
 #include "Transaction.h"
@@ -35,10 +36,13 @@ crow::json::wvalue convertSnapshotToJson(const firebase::database::DataSnapshot&
     return json;
 }
 
-int main() {
-    crow::SimpleApp app;
-
-    initializeFirebase();
+void linkRoutes(crow::SimpleApp& app) {
+    // Add CORS setup
+    app.middleware<crow::CORSHandler>()
+        .global()
+        .allow_origin("*")
+        .allow_methods("GET, POST, PUT, DELETE")
+        .allow_headers("Content-Type");
 
     // Endpoint to get user data
     CROW_ROUTE(app, "/api/user/<int>")
@@ -66,43 +70,50 @@ int main() {
     CROW_ROUTE(app, "/api/account/<int>/transactions")
     ([](int accountID) {
         std::vector<Transaction> transactions = Transaction::getTransactions(accountID);
-        crow::json::wvalue response = crow::json::wvalue::list();
-        for (const auto& transaction : transactions) {
+        crow::json::wvalue response;
+        response["transactions"] = crow::json::wvalue();
+        for (size_t i = 0; i < transactions.size(); ++i) {
             crow::json::wvalue transactionJson;
-            transactionJson["transactionID"] = transaction.getTransactionID();
-            transactionJson["accountID"] = transaction.getAccountID();
-            transactionJson["transactionType"] = transaction.getTransactionType();
-            transactionJson["amount"] = transaction.getAmount();
-            response.push_back(transactionJson);
+            transactionJson["transactionID"] = transactions[i].getTransactionID();
+            transactionJson["amount"] = transactions[i].getAmount();
+            transactionJson["date"] = transactions[i].getDate();
+            response["transactions"][i] = std::move(transactionJson);
         }
         return crow::response(response);
     });
 
-    // Endpoint to authenticate user
-    CROW_ROUTE(app, "/api/authenticate")
-    .methods("POST"_method)
-    ([](const crow::request& req) {
-        auto body = crow::json::load(req.body);
-        if (!body) {
-            return crow::response(400, "Invalid JSON");
+    // Serve static files for the React frontend
+    CROW_ROUTE(app, "/<path>")
+    ([](const crow::request& req, crow::response& res, std::string path) {
+        if (path.empty()) {
+            path = "index.html";
         }
-
-        std::string email = body["email"].s();
-        std::string password = body["password"].s();
-
-        auto future = auth->SignInWithEmailAndPassword(email.c_str(), password.c_str());
-        future.OnCompletion([](const firebase::Future<firebase::auth::User*>& completed_future) {
-            if (completed_future.error() == firebase::auth::kAuthErrorNone) {
-                const firebase::auth::User* user = *completed_future.result();
-                crow::json::wvalue response;
-                response["uid"] = user->uid();
-                return crow::response(response);
-            } else {
-                return crow::response(401, "Authentication failed");
-            }
-        });
+        std::ifstream file("../Frontend/" + path);
+        if (!file) {
+            res.code = 404;
+            res.end("File not found");
+            return;
+        }
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        res.end(buffer.str());
     });
 
-    app.port(18080).multithreaded().run();
+    // Serve the index.html file for the root path
+    CROW_ROUTE(app, "/")
+    ([]() {
+        std::ifstream file("../Frontend/index.html");
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        return buffer.str();
+    });
 }
 
+int main() {
+    crow::SimpleApp app;
+
+    initializeFirebase();
+    linkRoutes(app);
+
+    app.port(8080).multithreaded().run();
+}

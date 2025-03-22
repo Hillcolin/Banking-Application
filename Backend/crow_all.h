@@ -3330,6 +3330,12 @@ namespace sha1
 
 #pragma once
 #include <boost/asio.hpp>
+
+// Replace the line causing the error
+// return this->impl_.get_executor().context();
+
+// With the following line
+return static_cast<boost::asio::io_service&>(this->impl_.get_executor().context());
 #ifdef CROW_ENABLE_SSL
 #include <boost/asio/ssl.hpp>
 #endif

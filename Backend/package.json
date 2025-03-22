@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "g++ -o main main.cpp -IC:\\vcpkg\\installed\\x64-windows\\include -LC:\\vcpkg\\installed\\x64-windows\\lib -lfirebase_app -lfirebase_auth -lfirebase_database -lboost_system -lboost_filesystem && ./main"
+    "dev": "cmake -B build -S . && cmake --build build && .\\build\\Debug\\main"
   },
   "dependencies": {
     "nodemon": "^2.0.15"
