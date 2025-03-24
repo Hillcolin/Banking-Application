@@ -2,17 +2,25 @@
 #define USER_H
 
 #include <string>
-#include <firebase/database.h>
+#include <functional>
 
 class User {
 public:
+    User() = default;
     User(int userID, const std::string& username, const std::string& cardNum);
 
     int getUserID() const;
-    std::string getUsername() const;
-    std::string getCardNum() const;
+    void setUserID(int newID);
 
-    static User fetchUser(int userID);
+    std::string getUsername() const;
+    void setUsername(const std::string& newName);
+
+    std::string getCardNum() const;
+    void setCardNum(const std::string& newCardNum);
+
+    void saveUser();
+
+    static void fetchUser(int userID, const std::function<void(User)>& callback);
 
 private:
     int userID;

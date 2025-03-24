@@ -1,3 +1,0 @@
-# Ignore reason: Necessary onboarding tool
-ignorePaths:
-- generate_xml_from_google_services_json.exe

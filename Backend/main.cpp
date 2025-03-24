@@ -1,4 +1,3 @@
-#include "asio_compat.h"  // Add this before crow_all.h
 #include "crow_all.h"
 #include <firebase/app.h>
 #include <firebase/auth.h>
@@ -19,13 +18,24 @@ void initializeFirebase() {
     dotenv::init(); // Load environment variables from .env file
 
     firebase::AppOptions options;
-    options.set_project_id(std::getenv("VITE_FIREBASE_PROJECT_ID"));
-    options.set_app_id(std::getenv("VITE_FIREBASE_APP_ID"));
-    options.set_api_key(std::getenv("VITE_FIREBASE_API_KEY"));
+    char* project_id;
+    char* app_id;
+    char* api_key;
+    _dupenv_s(&project_id, nullptr, "VITE_FIREBASE_PROJECT_ID");
+    _dupenv_s(&app_id, nullptr, "VITE_FIREBASE_APP_ID");
+    _dupenv_s(&api_key, nullptr, "VITE_FIREBASE_API_KEY");
+
+    options.set_project_id(project_id);
+    options.set_app_id(app_id);
+    options.set_api_key(api_key);
 
     firebase::App* app = firebase::App::Create(options);
     database = firebase::database::Database::GetInstance(app);
     auth = firebase::auth::Auth::GetAuth(app);
+
+    free(project_id);
+    free(app_id);
+    free(api_key);
 }
 
 crow::json::wvalue convertSnapshotToJson(const firebase::database::DataSnapshot& snapshot) {
@@ -37,22 +47,19 @@ crow::json::wvalue convertSnapshotToJson(const firebase::database::DataSnapshot&
 }
 
 void linkRoutes(crow::SimpleApp& app) {
-    // Add CORS setup
-    app.middleware<crow::CORSHandler>()
-        .global()
-        .allow_origin("*")
-        .allow_methods("GET, POST, PUT, DELETE")
-        .allow_headers("Content-Type");
-
     // Endpoint to get user data
     CROW_ROUTE(app, "/api/user/<int>")
     ([](int userID) {
-        User user = User::fetchUser(userID);
-        crow::json::wvalue response;
-        response["userID"] = user.getUserID();
-        response["username"] = user.getUsername();
-        response["cardNumber"] = user.getCardNum();
-        return crow::response(response);
+        crow::response res;
+        User::fetchUser(userID, [&res, userID](User user) {
+            crow::json::wvalue response;
+            response["userID"] = user.getUserID();
+            response["username"] = user.getUsername();
+            response["cardNumber"] = user.getCardNum();
+            res.write(crow::json::dump(response));
+            res.end();
+        });
+        return res;
     });
 
     // Endpoint to get account data
@@ -77,7 +84,7 @@ void linkRoutes(crow::SimpleApp& app) {
             transactionJson["transactionID"] = transactions[i].getTransactionID();
             transactionJson["amount"] = transactions[i].getAmount();
             transactionJson["date"] = transactions[i].getDate();
-            response["transactions"][i] = std::move(transactionJson);
+            response["transactions"][static_cast<unsigned int>(i)] = std::move(transactionJson);
         }
         return crow::response(response);
     });

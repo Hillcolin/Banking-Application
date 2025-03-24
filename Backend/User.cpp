@@ -1,5 +1,6 @@
 #include "User.h"
 #include <iostream>
+#include <firebase/database.h>
 
 extern firebase::database::Database* database;
 
@@ -36,8 +37,17 @@ void User::saveUser() {
     user_ref.Child("cardNum").SetValue(cardNum.c_str());
 }
 
-User User::fetchUser(int userID) {
-    // Fetch user data from the database
-    // For now, return a dummy user
-    return User(userID, "dummy_username", "dummy_card_num");
+void User::fetchUser(int userID, const std::function<void(User)>& callback) {
+    auto user_ref = database->GetReference("users").Child(std::to_string(userID));
+    user_ref.GetValue().OnCompletion([callback, userID](const firebase::Future<firebase::database::DataSnapshot>& result) {
+        if (result.error() == firebase::database::kErrorNone) {
+            const firebase::database::DataSnapshot& snapshot = *result.result();
+            std::string username = snapshot.Child("username").value().string_value();
+            std::string cardNum = snapshot.Child("cardNum").value().string_value();
+            User user(userID, username, cardNum);
+            callback(user);
+        } else {
+            std::cerr << "Error fetching user data: " << result.error_message() << std::endl;
+        }
+    });
 }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState, FormEvent, ChangeEvent } from 'react';
-import { sendEmail } from '../api';
+import emailjs from 'emailjs-com';
 import '../../styles/landingPage.css';
 
 interface ContactFormData {
@@ -9,7 +9,6 @@ interface ContactFormData {
 }
 
 const LandingPage: React.FC = () => {
-  console.log('LandingPage component rendering');
   const [formData, setFormData] = useState<ContactFormData>({
     email: '',
     message: ''
@@ -30,14 +29,28 @@ const LandingPage: React.FC = () => {
     setIsSubmitting(true);
     setSubmitMessage('');
 
-    const response = await sendEmail(formData);
-    
-    if (response.success) {
-      setSubmitMessage('Message sent successfully!');
-      setFormData({ email: '', message: '' });
-    } else {
-      setSubmitMessage(response.message || 'Failed to send message. Please try again.');
+    try {
+      const result = await emailjs.send(
+        'service_iteep7j', // Replace with your EmailJS service ID
+        'template_fkpt0yf', // Replace with your EmailJS template ID
+        {
+          from_email: formData.email,
+          message: formData.message,
+          to_email: 'chill232@uwo.ca'
+        },
+        'DyfgL_5h3OUWI6rLR' // Replace with your EmailJS user ID (public key)
+      );
+      if (result.status === 200) {
+        setSubmitMessage('Message sent successfully!');
+        setFormData({ email: '', message: '' });
+      } else {
+        setSubmitMessage('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      setSubmitMessage('Failed to send message. Please try again.');
     }
+
     setIsSubmitting(false);
   };
 

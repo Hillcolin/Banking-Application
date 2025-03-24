@@ -1,5 +1,0 @@
-attrs
-absl-py
-pytz
-requests
-retry
