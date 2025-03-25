@@ -1,0 +1,10 @@
+^C:\USERS\HILLC\ONEDRIVE\DOCUMENTS\GITHUB\BANKING-APPLICATION\OUT\BUILD\X64-DEBUG\CMAKEFILES\8AE87B05C95BA3D58A753710FA15A69D\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/hillc/OneDrive/Documents/GitHub/Banking-Application -BC:/Users/hillc/OneDrive/Documents/GitHub/Banking-Application/out/build/x64-Debug --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/hillc/OneDrive/Documents/GitHub/Banking-Application/out/build/x64-Debug/MyCrowApp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

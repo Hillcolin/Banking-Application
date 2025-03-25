@@ -1,35 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/login';
-import LandingPage from './components/LandingPage';
+import LandingPage from './components/landingPage';
 import BalancePage from './components/BalancePage';
-import './App.css';
+import Terms from './components/terms';
+import { useAuth } from './contexts/authContext';
+import { AuthProvider } from './contexts/authContext';
+
+// ProtectedRoute Component
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { currentUser } = useAuth();
+
+  if (!currentUser) {
+    // Redirect to login if the user is not authenticated
+    return <Login />;
+  }
+
+  return <>{children}</>;
+};
 
 const App = () => {
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    console.log('Making API call to /api/hello');
-    fetch('/api')
-      .then(response => {
-        console.log('Response:', response);
-        return response.text();
-      })
-      .then(data => {
-        console.log('Data:', data);
-        setMessage(data);
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/balance" element={<BalancePage />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/terms" element={<Terms />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/balance"
+            element={
+              <ProtectedRoute>
+                <BalancePage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 };
 

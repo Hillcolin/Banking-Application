@@ -1,0 +1,6 @@
+# .gitignore
+.env
+Frontend/.env
+crow/
+id_ed25519
+id_ed25519.pub

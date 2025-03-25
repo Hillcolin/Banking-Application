@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"npm run start-backend\"",
+    "start-backend": "g++ -o my_crow_backend main.cpp -pthread && ./my_crow_backend",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

@@ -1,113 +1,63 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth, googleProvider, db } from '../config/firebase';
-import { onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup 
+} from 'firebase/auth';
+import { auth } from '../../config/firebase'; // Import your Firebase config
 
-interface AuthContextType {
+interface AuthContextProps {
   currentUser: any;
-  signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   createAccount: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
+  logOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        await createUserInFirestore(user);
-      }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
     });
-
     return unsubscribe;
   }, []);
 
-  const createUserInFirestore = async (user: any) => {
-    const userRef = doc(db, "users", user.uid);
-    try {
-      const userDocSnap = await getDoc(userRef);
-      if (!userDocSnap.exists()) {
-        await setDoc(userRef, {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          balance: 100, // Set default balance to 100
-        });
-        console.log("User added to Firestore.");
-      }
-    } catch (error) {
-      console.error("Error adding user to Firestore:", error);
-      alert("Error creating user profile. Please contact support.");
-    }
-  };
-
-  const signInWithGoogle = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-      await createUserInFirestore(user);
-    } catch (error) {
-      console.error('Error signing in with Google:', error);
-      if ((error as any).code === 'auth/popup-closed-by-user') {
-        alert('The popup was closed before completing the sign in.');
-      } else {
-        alert('An error occurred during Google sign in. Please try again.');
-      }
-    }
-  };
-
   const signInWithEmail = async (email: string, password: string) => {
-    try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      const user = result.user;
-      await createUserInFirestore(user);
-    } catch (error) {
-      console.error('Error signing in with email:', error);
-      if ((error as any).code === 'auth/invalid-credential') {
-        alert('Invalid credentials. Please check your email and password.');
-      } else {
-        alert('An error occurred during email sign in. Please try again.');
-      }
-    }
+    await signInWithEmailAndPassword(auth, email, password);
   };
 
   const createAccount = async (email: string, password: string) => {
-    try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      const user = result.user;
-      await createUserInFirestore(user);
-    } catch (error) {
-      console.error('Error creating account:', error);
-      alert('An error occurred during account creation. Please try again.');
-    }
+    await createUserWithEmailAndPassword(auth, email, password);
   };
 
-  const value = {
-    currentUser,
-    signInWithGoogle,
-    signInWithEmail,
-    createAccount,
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  };
+
+  const logOut = async () => {
+    await signOut(auth);
   };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ currentUser, signInWithEmail, createAccount, signInWithGoogle, logOut }}>
       {!loading && children}
     </AuthContext.Provider>
   );
-}
+};
 
-export default AuthProvider;
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
+  return context;
+};
