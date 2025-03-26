@@ -1,11 +1,10 @@
 /* General Styles */
 html, body {
-	margin: 0;
-	padding: 0;
-	min-height: 100vh; /* Ensure the page is scrollable */
-	overflow-x: hidden; /* Prevent horizontal scroll */
-  }
-  
+  margin: 0;
+  padding: 0;
+  height: auto; /* Allow the body to grow based on content */
+  overflow-y: visible; /* Ensure scrolling is enabled */
+}
 
 body {
   font-family: Arial, sans-serif;
@@ -31,6 +30,7 @@ body {
 .landing-page {
   text-align: center;
   padding: 20px;
+  position: relative; /* Ensure it does not interfere with scrolling */
 }
 
 /* Navigation Bar */
@@ -41,8 +41,6 @@ body {
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.9);
   color: #333;
-  position: relative; /* Changed from sticky to relative */
-  top: 0;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }

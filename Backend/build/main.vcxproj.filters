@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\hillc\OneDrive\Documents\GitHub\Banking-Application\Backend\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\hillc\OneDrive\Documents\GitHub\Banking-Application\Backend\Account.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\hillc\OneDrive\Documents\GitHub\Banking-Application\Backend\Transaction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\hillc\OneDrive\Documents\GitHub\Banking-Application\Backend\User.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\hillc\OneDrive\Documents\GitHub\Banking-Application\Backend\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E81F1F49-B534-3D51-AB4A-AF0796C14F55}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

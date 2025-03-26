@@ -9,7 +9,7 @@ const Terms: React.FC = () => {
         <section id="terms" className="terms">
           <h2>Terms of Service</h2>
           <p>
-            Welcome to BankApp! These Terms of Service ("Terms") govern your access to and use of BankApp’s website, mobile application, and online banking services (collectively, the "Services"). By accessing or using the Services, you agree to be bound by these Terms. If you do not agree to these Terms, you may not access or use the Services.
+            Welcome to ACE Banks! These Terms of Service ("Terms") govern your access to and use of ACE Banks’s website, mobile application, and online banking services (collectively, the "Services"). By accessing or using the Services, you agree to be bound by these Terms. If you do not agree to these Terms, you may not access or use the Services.
           </p>
 
           <h3>1. Acceptance of Terms</h3>
@@ -24,7 +24,7 @@ const Terms: React.FC = () => {
 
           <h3>3. Account Registration</h3>
           <p>
-            To use certain features of the Services, you may be required to register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete. You are responsible for safeguarding your account credentials and for all activities that occur under your account. BankApp is not liable for any loss or damage arising from your failure to protect your account credentials. You agree to notify BankApp immediately of any unauthorized access to or use of your account. BankApp reserves the right to suspend or terminate your account at any time for any reason, including but not limited to a violation of these Terms.
+            To use certain features of the Services, you may be required to register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete. You are responsible for safeguarding your account credentials and for all activities that occur under your account. ACE Banks is not liable for any loss or damage arising from your failure to protect your account credentials. You agree to notify ACE Banks immediately of any unauthorized access to or use of your account. ACE Banks reserves the right to suspend or terminate your account at any time for any reason, including but not limited to a violation of these Terms.
           </p>
 
           <h3>4. Use of Services</h3>
@@ -33,7 +33,7 @@ const Terms: React.FC = () => {
             <li>In any way that violates any applicable federal, state, local, or international law or regulation.</li>
             <li>To engage in any activity that is fraudulent, deceptive, or misleading.</li>
             <li>To transmit any advertising or promotional material without our prior written consent.</li>
-            <li>To impersonate or attempt to impersonate BankApp employees or other users.</li>
+            <li>To impersonate or attempt to impersonate ACE Banks employees or other users.</li>
             <li>To engage in conduct that restricts others' enjoyment of the Services.</li>
             <li>To introduce viruses or other harmful material.</li>
             <li>To attempt unauthorized access to our systems.</li>
@@ -41,12 +41,12 @@ const Terms: React.FC = () => {
 
           <h3>5. Financial Transactions</h3>
           <p>
-            BankApp facilitates financial transactions such as fund transfers and bill payments. You are solely responsible for ensuring the accuracy and legality of all transactions initiated through the Services.
+            ACE Banks facilitates financial transactions such as fund transfers and bill payments. You are solely responsible for ensuring the accuracy and legality of all transactions initiated through the Services.
           </p>
 
           <h3>6. Disclaimer of Warranties</h3>
           <p>
-            THE SERVICES ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. BANKAPP DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED.
+            THE SERVICES ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. ACE BANKS DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED.
           </p>
 
           {/* Back Button */}

@@ -4,3 +4,4 @@ Frontend/.env
 Backendd/.env
 crow/
 vcpkg
+firebase_cpp_sdk/
