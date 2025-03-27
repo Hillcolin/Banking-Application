@@ -21,18 +21,22 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
   try {
+    // Check if the user is locked out
     const isLockedOut = await checkLockout(email);
     if (isLockedOut) {
       res.status(403).json({ message: 'Account is locked. Please try again later.' });
       return;
+      
     }
 
-    const uid = await signInUser(email, password); // Ensure this function checks the password properly
-    await resetFailedAttempts(email);
+    // Attempt to log in the user
+    const uid = await signInUser(email, password); // Replace with your Firebase login logic
+    await resetFailedAttempts(email); // Reset failed attempts on successful login
     res.json({ message: 'Login successful', uid });
   } catch (error: any) {
-    res.status(401).json({ message: error.message || 'Unauthorized' }); // Ensure JSON response
+    // Increment failed attempts on login failure
     await incrementFailedAttempts(email);
+    res.status(401).json({ message: error.message || 'Unauthorized' });
   }
 });
 
