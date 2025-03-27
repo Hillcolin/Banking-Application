@@ -16,6 +16,7 @@ interface AuthContextProps {
   createAccount: (email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   logOut: () => Promise<void>;
+  getIdToken: () => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -49,8 +50,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await signOut(auth);
   };
 
+  const getIdToken = async (): Promise<string | null> => {
+    if (auth.currentUser) {
+      return await auth.currentUser.getIdToken();
+    }
+    return null;
+  };
+
   return (
-    <AuthContext.Provider value={{ currentUser, signInWithEmail, createAccount, signInWithGoogle, logOut }}>
+    <AuthContext.Provider value={{ currentUser, signInWithEmail, createAccount, signInWithGoogle, logOut, getIdToken }}>
       {!loading && children}
     </AuthContext.Provider>
   );
