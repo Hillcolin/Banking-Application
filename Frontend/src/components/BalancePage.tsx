@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/authContext';
 import { fetchOrInitializeUserData } from './fetchOrInitializeUserData'; // Import the utility function
-import { Link } from 'react-router-dom'; // Import Link from React Router
+import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate from React Router
 import '../../styles/balance.css';
 
 interface Account {
@@ -15,6 +15,7 @@ const BalancePage: React.FC = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +27,14 @@ const BalancePage: React.FC = () => {
 
       try {
         const userAccounts = await fetchOrInitializeUserData(currentUser.uid); // Call the utility function
-        setAccounts(userAccounts);
+
+        // Sort accounts in the desired order: Checking, Savings, Credit Card
+        const sortedAccounts = userAccounts.sort((a, b) => {
+          const order = ['Checking Account', 'Savings Account', 'Credit Card Account'];
+          return order.indexOf(a.type) - order.indexOf(b.type);
+        });
+
+        setAccounts(sortedAccounts);
       } catch (err) {
         console.error('Error fetching user data:', err);
         setError('Error fetching user data. Please try again later.');
@@ -67,17 +75,15 @@ const BalancePage: React.FC = () => {
             </Link>
           ))}
         </div>
-        <p className='spacer'>Total Balance: ${totalBalance.toFixed(2)}</p>
+        <p className="spacer">Total Balance: ${totalBalance.toFixed(2)}</p>
       </section>
 
       {/* Quick Actions Section */}
       <section className="quick-actions">
         <h2>Quick Actions</h2>
         <div className="action-buttons">
-          <button className="action-button">Transfer Money</button>
-          <button className="action-button">Pay Bills</button>
-          <button className="action-button">Mobile Deposit</button>
-          <button className="action-button">Customer Support</button>
+          <button className="action-button" onClick={() => navigate('/deposit')}>Deposit</button>
+          <button className="action-button" onClick={() => navigate('/withdraw')}>Withdraw</button>
         </div>
       </section>
     </div>

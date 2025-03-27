@@ -6,6 +6,8 @@ import BalancePage from './components/BalancePage';
 import AccountDetails from './components/AccountDetails';
 import Terms from './components/terms';
 import PrivacyPolicy from './components/privacyPolicy';
+import DepositPage from './components/DepositPage'; // Import DepositPage
+import WithdrawPage from './components/WithdrawPage'; // Import WithdrawPage
 import { useAuth } from './contexts/authContext';
 import { AuthProvider } from './contexts/authContext';
 
@@ -46,6 +48,22 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <AccountDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/deposit" // Route for Deposit Page
+            element={
+              <ProtectedRoute>
+                <DepositPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/withdraw" // Route for Withdraw Page
+            element={
+              <ProtectedRoute>
+                <WithdrawPage />
               </ProtectedRoute>
             }
           />
