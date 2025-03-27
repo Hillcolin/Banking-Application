@@ -1,5 +1,6 @@
 import admin from 'firebase-admin';
 import serviceAccount from '../firebase-service-account.json';
+import { getFirestore } from 'firebase/firestore';
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
