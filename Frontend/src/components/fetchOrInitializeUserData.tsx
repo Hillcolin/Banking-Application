@@ -7,6 +7,13 @@ interface Account {
   balance: number;
 }
 
+interface Transaction {
+  id: string;
+  date: string;
+  description: string;
+  amount: number;
+}
+
 export const fetchOrInitializeUserData = async (uid: string): Promise<Account[]> => {
   try {
     const userRef = doc(db, 'users', uid); // Reference to the user's document
@@ -34,10 +41,20 @@ export const fetchOrInitializeUserData = async (uid: string): Promise<Account[]>
       // Create user document
       await setDoc(userRef, { createdAt: new Date().toISOString() });
 
-      // Create accounts subcollection
+      // Create accounts subcollection and initialize transactions
       for (const account of defaultAccounts) {
         const accountRef = doc(db, `users/${uid}/accounts`, account.id);
         await setDoc(accountRef, { type: account.type, balance: account.balance });
+
+        // Initialize transactions subcollection with a default transaction
+        const transactionsRef = collection(db, `users/${uid}/accounts/${account.id}/transactions`);
+        const defaultTransaction = {
+          date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+          description: 'Account opened',
+          amount: 0,
+        };
+        const defaultTransactionRef = doc(transactionsRef, 'initial-transaction'); // Use a fixed ID for the default transaction
+        await setDoc(defaultTransactionRef, defaultTransaction);
       }
 
       return defaultAccounts;
@@ -45,5 +62,23 @@ export const fetchOrInitializeUserData = async (uid: string): Promise<Account[]>
   } catch (error) {
     console.error('Error fetching or initializing user data:', error);
     throw new Error('Failed to fetch or initialize user data.');
+  }
+};
+
+export const fetchAccountTransactions = async (uid: string, accountId: string): Promise<Transaction[]> => {
+  try {
+    const transactionsRef = collection(db, `users/${uid}/accounts/${accountId}/transactions`);
+    const transactionsSnapshot = await getDocs(transactionsRef);
+
+    const transactions: Transaction[] = transactionsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Transaction[];
+
+    // Simply return the transactions without adding the default transaction again
+    return transactions;
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    throw new Error('Failed to fetch transactions.');
   }
 };

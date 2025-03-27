@@ -26,3 +26,6 @@ dist-ssr
 # Config directory
 src/config/
 .env
+.env.local
+bkg_x64/firebase-service-account.json
+bkg_x64/node_modules

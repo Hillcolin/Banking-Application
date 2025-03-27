@@ -1,0 +1,61 @@
+.account-details {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.account-details h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #008CBA;
+}
+
+.account-details p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.transaction-history {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-history h2 {
+  margin-bottom: 15px;
+  color: #008CBA;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.transaction-history ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.transaction-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-item p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.transaction-item strong {
+  color: #333;
+}

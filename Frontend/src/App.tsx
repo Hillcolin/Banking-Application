@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/login';
 import LandingPage from './components/landingPage';
 import BalancePage from './components/BalancePage';
+import AccountDetails from './components/AccountDetails';
 import Terms from './components/terms';
 import PrivacyPolicy from './components/privacyPolicy';
 import { useAuth } from './contexts/authContext';
@@ -37,6 +38,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <BalancePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account/:accountId" // Dynamic route for account details
+            element={
+              <ProtectedRoute>
+                <AccountDetails />
               </ProtectedRoute>
             }
           />
