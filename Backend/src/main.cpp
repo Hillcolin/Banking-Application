@@ -128,12 +128,15 @@ int main() {
 
     //app.port(8080).multithreaded().run();
 
+
+    // Testing:
     Account acc(101, 500.0, 1, "");
     Account acc2(102, 1500.0, 2, "");
     SavingsAccount acc3(103, 1500.0, 2, "Savings", 0.0);
     CheckingsAccount acc4(104, 500.0, 2, "Checkings", 100.0);
+    User user(1, "cb", 0239);
 
-    cout << "Account balance:" << acc.getBalance() << endl;
+    /* cout << "Account balance:" << acc.getBalance() << endl;
 
     acc.deposit(50.0);
     cout << "Account balance:" << acc.getBalance() << endl;
@@ -148,8 +151,8 @@ int main() {
     cout << "Account balance acc1:" << acc.getBalance() << endl;
     cout << "Account balance acc2:" << acc2.getBalance() << endl;
 
-    acc.transfer(acc2, 550.0);
-    cout << "Account balance acc1:" << acc.getBalance() << endl;
+    acc.transfer(acc2, 2.0);
+    cout << " Tra Account balance acc1:" << acc.getBalance() << endl;
     cout << "Account balance acc2:" << acc2.getBalance() << endl;
 
     cout << "Account balance acc3:" << acc3.getBalance() << endl;
@@ -166,5 +169,8 @@ int main() {
     acc4.withdraw(101.0);
     cout << "Account balance acc4:" << acc4.getBalance() << endl;
     acc4.withdraw(1000.0);
+    */
 
+    
+    
 }
