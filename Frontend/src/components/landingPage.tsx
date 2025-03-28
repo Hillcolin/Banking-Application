@@ -1,3 +1,10 @@
+/**
+ * @file landingPage.tsx
+ * @brief Landing page for the ACE Banks application.
+ * @details This component serves as the landing page for the ACE Banks application. It includes navigation, a header, feature highlights, an about section, and a contact form. The contact form uses EmailJS to send messages to the support team.
+ * @author Colin
+ */
+
 import { Link } from 'react-router-dom';
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import emailjs from 'emailjs-com';
@@ -8,6 +15,11 @@ interface ContactFormData {
   message: string;
 }
 
+/**
+ * @class LandingPage
+ * @brief React component for the landing page of the ACE Banks application.
+ * @details This component includes navigation, a header, feature highlights, an about section, and a contact form. The contact form integrates with EmailJS to send messages to the support team.
+ */
 const LandingPage: React.FC = () => {
   const [formData, setFormData] = useState<ContactFormData>({
     email: '',
@@ -16,6 +28,11 @@ const LandingPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
+  /**
+   * @brief Handles changes to the contact form inputs.
+   * @details Updates the state of the contact form as the user types into the email or message fields.
+   * @param e The change event triggered by the input or textarea.
+   */
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
@@ -24,6 +41,12 @@ const LandingPage: React.FC = () => {
     }));
   };
 
+  /**
+   * @brief Handles the submission of the contact form.
+   * @details Sends the contact form data to the EmailJS service. Displays a success or error message based on the result.
+   * @param e The form submission event.
+   * @returns void
+   */
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -31,14 +54,14 @@ const LandingPage: React.FC = () => {
 
     try {
       const result = await emailjs.send(
-        'service_iteep7j', // Replace with your EmailJS service ID
-        'template_fkpt0yf', // Replace with your EmailJS template ID
+        'service_iteep7j',
+        'template_fkpt0yf',
         {
           from_email: formData.email,
           message: formData.message,
           to_email: 'chill232@uwo.ca'
         },
-        'DyfgL_5h3OUWI6rLR' // Replace with your EmailJS user ID (public key)
+        'DyfgL_5h3OUWI6rLR'
       );
       if (result.status === 200) {
         setSubmitMessage('Message sent successfully!');
@@ -71,6 +94,8 @@ const LandingPage: React.FC = () => {
         <Link to="/login" className="btn-primary" role="button">Get Started</Link>
       </header>
 
+  
+        {/* Main Content Section */}
       <main>
         <section id="features" className="features">
           <div className="feature-grid">
@@ -97,6 +122,7 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
+        {/* About Section */}
         <section id="about" className="about">
           <h2>About Us</h2>
           <p>We're committed to providing innovative financial solutions to meet your needs. With years of experience and a customer-first approach, we're here to help you achieve your financial goals.</p>
@@ -130,6 +156,7 @@ const LandingPage: React.FC = () => {
         </section>
       </main>
 
+       {/* Footer Section */}
       <footer className="landing-footer">
         <div className="footer-links">
           <Link to="/terms" className="tos-button" role="button">Terms of Service</Link>

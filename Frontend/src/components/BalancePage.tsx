@@ -1,5 +1,13 @@
+/**
+ * @file BalancePage.tsx
+ * @brief Displays the user's account balances and provides navigation for account actions.
+ * @details This component fetches and displays the user's accounts, their balances, and provides
+ * options for depositing, withdrawing, transferring funds, and logging out.
+ * @author Colin
+ */
+
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/authContext'; // Import useAuth for logout functionality
+import { useAuth } from '../contexts/authContext';
 import { fetchOrInitializeUserData } from './fetchOrInitializeUserData';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/balance.css';
@@ -10,13 +18,25 @@ interface Account {
   balance: number;
 }
 
+/**
+ * @class BalancePage
+ * @brief React component for displaying account balances and navigation options.
+ * @details This component fetches the user's accounts, calculates the total balance, and provides
+ * navigation for account-related actions such as deposits, withdrawals, and transfers.
+ */
 const BalancePage: React.FC = () => {
-  const { currentUser, logOut } = useAuth(); // Access logOut function from useAuth
+  const { currentUser, logOut } = useAuth();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  /**
+   * @brief Fetches the user's accounts and initializes them if necessary.
+   * @details This function fetches the user's accounts from the database. If the user is not logged in,
+   * it sets an error. If accounts are fetched successfully, they are sorted by type.
+   * @author Colin
+   */
   useEffect(() => {
     const fetchData = async () => {
       if (!currentUser) {
@@ -26,10 +46,8 @@ const BalancePage: React.FC = () => {
       }
 
       try {
-        // Pass both uid and email to fetchOrInitializeUserData
         const userAccounts = await fetchOrInitializeUserData(currentUser.uid, currentUser.email);
 
-        // Sort accounts in the desired order: Checking, Savings, Credit Card
         const sortedAccounts = userAccounts.sort((a, b) => {
           const order = ['Checking Account', 'Savings Account', 'Credit Card Account'];
           return order.indexOf(a.type) - order.indexOf(b.type);
@@ -47,10 +65,16 @@ const BalancePage: React.FC = () => {
     fetchData();
   }, [currentUser]);
 
+  /**
+   * @brief Logs the user out and redirects to the landing page.
+   * @details This function calls the `logOut` function from the authentication context and navigates
+   * the user to the landing page upon successful logout.
+   * @returns void
+   */
   const handleLogout = async () => {
     try {
-      await logOut(); // Call the logOut function from useAuth
-      navigate('/'); // Redirect to the landing page
+      await logOut();
+      navigate('/');
     } catch (error) {
       console.error('Error during logout:', error);
     }
@@ -70,14 +94,13 @@ const BalancePage: React.FC = () => {
     <div className="dashboard">
       <h1>Welcome, {currentUser?.displayName || 'User'}!</h1>
 
-      {/* Account Summary Section */}
       <section className="account-summary">
         <h2>Account Summary</h2>
         <div className="accounts-container">
           {accounts.map(account => (
             <Link
               key={account.id}
-              to={`/account/${account.id}`} // Dynamic route for each account
+              to={`/account/${account.id}`}
               className="account-box"
             >
               <h3>{account.type}</h3>

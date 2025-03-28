@@ -1,7 +1,19 @@
+/**
+ * @file privacyPolicy.tsx
+ * @brief Privacy Policy page for the ACE Banks application.
+ * @details This component displays the Privacy Policy for the ACE Banks application. It outlines how user data is collected, used, shared, and protected. The page also provides contact information for inquiries about the policy. Users can navigate back to the home page using the provided link.
+ * @author Colin
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/terms.css';
 
+/**
+ * @class PrivacyPolicy
+ * @brief React component for displaying the Privacy Policy of the ACE Banks application.
+ * @details This component provides detailed information about the Privacy Policy, including sections on data collection, usage, sharing, security, and updates to the policy. It also includes a back button to navigate to the home page.
+ */
 const PrivacyPolicy: React.FC = () => {
     return (
         <div className="landing-page">
@@ -21,12 +33,12 @@ const PrivacyPolicy: React.FC = () => {
 
                     <h3>2. How We Use Your Information</h3>
                     <p>
-                        ACE BANKS uses your information to provide and improve the Services. We may also use your information to communicate with you, to prevent fraud, and to comply with legal requirements.
+                        ACE Banks uses your information to provide and improve the Services. We may also use your information to communicate with you, to prevent fraud, and to comply with legal requirements.
                     </p>
 
                     <h3>3. How We Share Your Information</h3>
                     <p>
-                        ACE BANKS may share your information with third parties that provide services on our behalf. We may also share your information with law enforcement or other third parties when required by law or to prevent fraud.
+                        ACE Banks may share your information with third parties that provide services on our behalf. We may also share your information with law enforcement or other third parties when required by law or to prevent fraud.
                     </p>
 
                     <h3>4. Security</h3>
@@ -41,7 +53,7 @@ const PrivacyPolicy: React.FC = () => {
 
                     <h3>6. Contact Us</h3>
                     <p>
-                        If you have any questions about this Policy, please contact us at 1800-123-4567 or email us at ACEBanks@google.ca
+                        If you have any questions about this Policy, please contact us at 1800-123-4567 or email us at ACEBanks@google.ca.
                     </p>
                     
                     {/* Back Button */}

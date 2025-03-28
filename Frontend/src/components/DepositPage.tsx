@@ -1,3 +1,12 @@
+/**
+ * @file DepositPage.tsx
+ * @brief Allows users to deposit money into their accounts.
+ * @details This component fetches the user's accounts, allows them to select an account,
+ * enter an amount, and deposit money into the selected account. It also provides navigation
+ * back to the balance page.
+ * @author Colin
+ */
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/authContext';
 import { fetchOrInitializeUserData } from './fetchOrInitializeUserData'; // Utility to fetch user accounts
@@ -10,6 +19,12 @@ interface Account {
   balance: number;
 }
 
+/**
+ * @class DepositPage
+ * @brief React component for depositing money into user accounts.
+ * @details This component fetches the user's accounts, allows them to select an account,
+ * enter an amount, and deposit money into the selected account.
+ */
 const DepositPage: React.FC = () => {
   const { currentUser } = useAuth();
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -18,12 +33,19 @@ const DepositPage: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate(); // Initialize useNavigate
 
+  // Section: Fetch Accounts
+  /**
+   * @brief Fetches the user's accounts from the database.
+   * @details This function fetches the user's accounts and sets the default selected account
+   * to the first account in the list. If fetching fails, it sets an error message.
+   * @author Colin
+   */
   useEffect(() => {
     const fetchAccounts = async () => {
       if (!currentUser) return;
 
       try {
-        const userAccounts = await fetchOrInitializeUserData(currentUser.uid);
+        const userAccounts = await fetchOrInitializeUserData(currentUser.uid, currentUser.email);
         setAccounts(userAccounts);
         if (userAccounts.length > 0) {
           setSelectedAccount(userAccounts[0].id); // Default to the first account
@@ -37,6 +59,14 @@ const DepositPage: React.FC = () => {
     fetchAccounts();
   }, [currentUser]);
 
+  // Section: Handle Deposit
+  /**
+   * @brief Handles the deposit action.
+   * @details This function sends a POST request to the backend to deposit the specified amount
+   * into the selected account. If the deposit is successful, it displays a success message.
+   * Otherwise, it displays an error message.
+   * @returns void
+   */
   const handleDeposit = async () => {
     if (!selectedAccount || !amount || parseFloat(amount) <= 0) {
       setMessage('Please select an account and enter a valid amount.');
@@ -65,6 +95,7 @@ const DepositPage: React.FC = () => {
     }
   };
 
+  // Section: Render Component
   return (
     <div className="deposit-page">
       <div className="content-box">

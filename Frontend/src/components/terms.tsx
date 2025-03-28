@@ -1,7 +1,19 @@
+/**
+ * @file terms.tsx
+ * @brief Terms of Service page for the ACE Banks application.
+ * @details This component displays the Terms of Service for the ACE Banks application. It outlines the rules, responsibilities, and disclaimers for using the Services. Users can navigate back to the home page using the provided link. The Terms include sections on acceptance, eligibility, account registration, use of services, financial transactions, and disclaimers of warranties.
+ * @author Colin
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../styles/terms.css'; // Import the CSS file for styling
+import '../../styles/terms.css';
 
+/**
+ * @class Terms
+ * @brief React component for displaying the Terms of Service of the ACE Banks application.
+ * @details This component provides detailed information about the Terms of Service, including sections on user responsibilities, account registration, and disclaimers. It also includes a back button to navigate to the home page.
+ */
 const Terms: React.FC = () => {
   return (
     <div className="landing-page">
