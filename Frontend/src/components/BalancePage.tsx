@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/authContext';
-import { fetchOrInitializeUserData } from './fetchOrInitializeUserData'; // Import the utility function
-import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate from React Router
+import { useAuth } from '../contexts/authContext'; // Import useAuth for logout functionality
+import { fetchOrInitializeUserData } from './fetchOrInitializeUserData';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/balance.css';
 
 interface Account {
@@ -11,7 +11,7 @@ interface Account {
 }
 
 const BalancePage: React.FC = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, logOut } = useAuth(); // Access logOut function from useAuth
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +26,8 @@ const BalancePage: React.FC = () => {
       }
 
       try {
-        const userAccounts = await fetchOrInitializeUserData(currentUser.uid); // Call the utility function
+        // Pass both uid and email to fetchOrInitializeUserData
+        const userAccounts = await fetchOrInitializeUserData(currentUser.uid, currentUser.email);
 
         // Sort accounts in the desired order: Checking, Savings, Credit Card
         const sortedAccounts = userAccounts.sort((a, b) => {
@@ -45,6 +46,15 @@ const BalancePage: React.FC = () => {
 
     fetchData();
   }, [currentUser]);
+
+  const handleLogout = async () => {
+    try {
+      await logOut(); // Call the logOut function from useAuth
+      navigate('/'); // Redirect to the landing page
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -84,8 +94,14 @@ const BalancePage: React.FC = () => {
         <div className="action-buttons">
           <button className="action-button" onClick={() => navigate('/deposit')}>Deposit</button>
           <button className="action-button" onClick={() => navigate('/withdraw')}>Withdraw</button>
+          <button className="action-button" onClick={() => navigate('/transfer')}>Transfer Funds</button>
         </div>
       </section>
+
+      {/* Logout Button */}
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 };

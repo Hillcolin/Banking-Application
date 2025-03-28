@@ -14,7 +14,7 @@ interface Transaction {
   amount: number;
 }
 
-export const fetchOrInitializeUserData = async (uid: string): Promise<Account[]> => {
+export const fetchOrInitializeUserData = async (uid: string, email: string): Promise<Account[]> => {
   try {
     const userRef = doc(db, 'users', uid); // Reference to the user's document
     const userDoc = await getDoc(userRef);
@@ -38,8 +38,8 @@ export const fetchOrInitializeUserData = async (uid: string): Promise<Account[]>
         { id: 'credit', type: 'Credit Card Account', balance: 0 },
       ];
 
-      // Create user document
-      await setDoc(userRef, { createdAt: new Date().toISOString() });
+      // Create user document with email
+      await setDoc(userRef, { email, createdAt: new Date().toISOString() });
 
       // Create accounts subcollection and initialize transactions
       for (const account of defaultAccounts) {

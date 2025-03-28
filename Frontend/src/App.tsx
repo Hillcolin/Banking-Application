@@ -6,8 +6,9 @@ import BalancePage from './components/BalancePage';
 import AccountDetails from './components/AccountDetails';
 import Terms from './components/terms';
 import PrivacyPolicy from './components/privacyPolicy';
-import DepositPage from './components/DepositPage'; // Import DepositPage
-import WithdrawPage from './components/WithdrawPage'; // Import WithdrawPage
+import DepositPage from './components/DepositPage';
+import WithdrawPage from './components/WithdrawPage';
+import TransferPage from './components/TransferPage';
 import { useAuth } from './contexts/authContext';
 import { AuthProvider } from './contexts/authContext';
 
@@ -64,6 +65,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <WithdrawPage />
+              </ProtectedRoute>
+            }
+          />
+                    <Route
+            path="/transfer" // Route for Deposit Page
+            element={
+              <ProtectedRoute>
+                <TransferPage />
               </ProtectedRoute>
             }
           />
