@@ -2,7 +2,7 @@
 #define ACCOUNT_H
 
 /**
-* Author: Group 13
+* Author: Christopher Boulos (251267786)
 * Date: 28/3/2025
 * 
 * @brief A header file that defines the implementation for the "Account" class which stores an account's information and handles actions like money deposits, withdrawals, and transfers. 

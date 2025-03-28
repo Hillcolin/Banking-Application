@@ -2,7 +2,7 @@
 #define SAVNGS_ACCOUNT_H
 
 /**
-* Author: Group 13
+* Author: Christopher Boulos (251267786)
 * Date: 28/3/2025
 * 
 * @brief A header file that defines the implementation for the "SavingsAccount" class which is a child of the 'Account' class. It does everything the 'Account' class does, but now has an 'interest rate' so that the Savings Account receives interest.

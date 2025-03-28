@@ -1,5 +1,5 @@
 /**
-* Author: Group 13
+* Author: Christopher Boulos (251267786)
 * Date: 28/3/2025
 *
 * @brief Stores account information (account ID, account balance, user ID that the account belongs to, and the account type ("Savings", "Checkings", or not specified)) in an Account object and handles money withdrawals, deposits, and transfers.
@@ -97,7 +97,7 @@ string Account::getAccountType() const {
 * @param newType The new account type
 */
 void Account::setAccountType(string newType) {
-    accountType = type;
+    accountType = newType;
 }
 
 /**
@@ -150,7 +150,7 @@ void Account::transfer(Account& recipient, double amount) {
 
         // Deposit the transfer amount to the recipient's account and deduct the transfer amount from the sender's account 
         recipient.deposit(amount);
-        balance -= amount;
+        withdraw(amount);
     }
 
     else {

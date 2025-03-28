@@ -2,7 +2,7 @@
 #define CHECKINGS_ACCOUNT_H
 
 /**
-* Author: Group 13
+* Author: Christopher Boulos (251267786)
 * Date: 28/3/2025
 * 
 * @brief A header file that defines the implementation for the "CheckingsAccount" class which is a child of the 'Account' class. It does everything the 'Account' class does, but has a 'withdrawalLimit' to limit the amount of money withdrawn from a withdrawal request.

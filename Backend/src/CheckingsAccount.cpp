@@ -1,5 +1,5 @@
 /**
-* Author: Group 13
+* Author: Christopher Boulos (251267786)
 * Date: 28/3/2025
 *
 * @brief A child of the 'Account' class that stores the same information that the 'Account' object stores but with an additional 'withdrawalLimit' parameter that limits the amount a user can withdraw from a withdraw request.
