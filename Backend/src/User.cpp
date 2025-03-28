@@ -1,10 +1,12 @@
 #include "User.h"
 #include <iostream>
-#include <firebase/database.h>
+//#include <firebase/database.h>
 
-extern firebase::database::Database* database;
+using namespace std;
 
-User::User(int userID, const std::string& username, const std::string& cardNum)
+//extern firebase::database::Database* database;
+
+User::User(int userID, const string& username, const string& cardNum)
     : userID(userID), username(username), cardNum(cardNum) {}
 
 int User::getUserID() const {
@@ -15,30 +17,30 @@ void User::setUserID(int newID) {
     userID = newID;
 }
 
-std::string User::getUsername() const {
+string User::getUsername() const {
     return username;
 }
 
-void User::setUsername(const std::string& newName) {
+void User::setUsername(const string& newName) {
     username = newName;
 }
 
-std::string User::getCardNum() const {
+string User::getCardNum() const {
     return cardNum;
 }
 
-void User::setCardNum(const std::string& newCardNum) {
+void User::setCardNum(const string& newCardNum) {
     cardNum = newCardNum;
 }
 
 void User::saveUser() {
-    auto user_ref = database->GetReference("users").Child(std::to_string(userID));
+    /* auto user_ref = database->GetReference("users").Child(std::to_string(userID));
     user_ref.Child("username").SetValue(username.c_str());
-    user_ref.Child("cardNum").SetValue(cardNum.c_str());
+    user_ref.Child("cardNum").SetValue(cardNum.c_str()); */
 }
 
-void User::fetchUser(int userID, const std::function<void(User)>& callback) {
-    auto user_ref = database->GetReference("users").Child(std::to_string(userID));
+void User::fetchUser(int userID, const function<void(User)>& callback) {
+    /* auto user_ref = database->GetReference("users").Child(std::to_string(userID));
     user_ref.GetValue().OnCompletion([callback, userID](const firebase::Future<firebase::database::DataSnapshot>& result) {
         if (result.error() == firebase::database::kErrorNone) {
             const firebase::database::DataSnapshot& snapshot = *result.result();
@@ -49,5 +51,5 @@ void User::fetchUser(int userID, const std::function<void(User)>& callback) {
         } else {
             std::cerr << "Error fetching user data: " << result.error_message() << std::endl;
         }
-    });
+    }); */
 }

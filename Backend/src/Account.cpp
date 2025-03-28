@@ -1,6 +1,7 @@
 #include "Account.h"
+using namespace std;
 
-Account::Account(int accountID, double balance, int userID, char accountType)
+Account::Account(int accountID, double balance, int userID, string accountType)
     : accountID(accountID), balance(balance), userID(userID), accountType(accountType) {}
 
 int Account::getAccountID() const {
@@ -19,11 +20,11 @@ void Account::setBalance(double newBalance) {
     balance = newBalance;
 }
 
-char Account::getAccountType() const {
+string Account::getAccountType() const {
     return accountType;
 }
 
-void Account::setAccountType(char type) {
+void Account::setAccountType(string type) {
     accountType = type;
 }
 
@@ -35,13 +36,14 @@ void Account::deposit(double amount) {
 // Withdraws money from the account
 void Account::withdraw(double amount) {
 
-    // If the amount being withdrawn is within the account's available balance:
-    if (amount <= balance) {
-        balance -= amount; 
+    // If the amount being withdrawn is not within the account's available balance:
+    if (amount > balance) {
+        // Frontend: Display on screen "Insufficient Funds. Please enter a lower withdrawal amount."
+        cout << "Insufficient Funds" << endl;
     }
 
     else {
-        // Frontend: Display on screen "Insufficient Funds. Please enter a lower withdrawal amount."
+        balance -= amount; 
     }
 }
 
@@ -56,6 +58,7 @@ void Account::transfer(Account& recipient, double amount) {
 
     else {
         // Frontend: Display on screen "Insufficient Funds. Please enter a lower transfer amount."
+        cout << "Insufficient Funds" << endl;
     }
 }
 
@@ -64,5 +67,5 @@ void Account::transfer(Account& recipient, double amount) {
 Account Account::fetchAccount(int accountID) {
     // Fetch account data from the database
     // For now, return a dummy account
-    return Account(accountID, 1000.0, 1);
+    return Account(accountID, 1000.0, 1, "Savings");
 }

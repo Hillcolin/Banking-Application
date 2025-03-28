@@ -1,20 +1,24 @@
-#include "crow_all.h"
-#include <firebase/app.h>
+//#include "crow_all.h"
+/* #include <firebase/app.h>
 #include <firebase/auth.h>
-#include <firebase/database.h>
+#include <firebase/database.h> */
 #include <unordered_map>
 #include <vector>
 #include <string>
 #include <iostream>
-#include "dotenv.h" // Ensure this header is included correctly
+// #include "dotenv.h" // Ensure this header is included correctly
 #include "User.h"
 #include "Account.h"
 #include "Transaction.h"
+#include "SavingsAccount.h"
+#include "CheckingsAccount.h"
 
-firebase::database::Database* database;
-firebase::auth::Auth* auth;
+using namespace std;
 
-void initializeFirebase() {
+//firebase::database::Database* database;
+//firebase::auth::Auth* auth;
+
+/* void initializeFirebase() {
     dotenv::init(); // Load environment variables from .env file
 
     firebase::AppOptions options;
@@ -114,13 +118,53 @@ void linkRoutes(crow::SimpleApp& app) {
         buffer << file.rdbuf();
         return buffer.str();
     });
-}
+} */
 
 int main() {
-    crow::SimpleApp app;
+    //crow::SimpleApp app;
 
-    initializeFirebase();
-    linkRoutes(app);
+    //initializeFirebase();
+    //linkRoutes(app);
 
-    app.port(8080).multithreaded().run();
+    //app.port(8080).multithreaded().run();
+
+    Account acc(101, 500.0, 1, "");
+    Account acc2(102, 1500.0, 2, "");
+    SavingsAccount acc3(103, 1500.0, 2, "Savings", 0.0);
+    CheckingsAccount acc4(104, 500.0, 2, "Checkings", 100.0);
+
+    cout << "Account balance:" << acc.getBalance() << endl;
+
+    acc.deposit(50.0);
+    cout << "Account balance:" << acc.getBalance() << endl;
+
+    acc.withdraw(50.0);
+
+    cout << "Account balance:" << acc.getBalance() << endl;
+
+    acc.withdraw(550.0);
+
+    acc.transfer(acc2, 50.0);
+    cout << "Account balance acc1:" << acc.getBalance() << endl;
+    cout << "Account balance acc2:" << acc2.getBalance() << endl;
+
+    acc.transfer(acc2, 550.0);
+    cout << "Account balance acc1:" << acc.getBalance() << endl;
+    cout << "Account balance acc2:" << acc2.getBalance() << endl;
+
+    cout << "Account balance acc3:" << acc3.getBalance() << endl;
+    acc3.applyInterest();
+    cout << "Account balance acc3:" << acc3.getBalance() << endl;
+    acc3.deposit(100.0);
+    cout << "Account balance acc3:" << acc3.getBalance() << endl;
+    acc3.withdraw(100.0);
+    cout << "Account balance acc3:" << acc3.getBalance() << endl;
+
+    cout << "Account balance acc4:" << acc4.getBalance() << endl;
+    acc4.withdraw(100.0);
+    cout << "Account balance acc4:" << acc4.getBalance() << endl;
+    acc4.withdraw(101.0);
+    cout << "Account balance acc4:" << acc4.getBalance() << endl;
+    acc4.withdraw(1000.0);
+
 }
