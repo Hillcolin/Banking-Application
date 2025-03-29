@@ -2,7 +2,6 @@
  * @file TransferPage.tsx
  * @brief Transfer Funds page for the ACE Banks application.
  * @details This component allows users to transfer funds between their accounts and other users' accounts. It fetches the user's accounts, validates the recipient's email, and processes the transfer through the backend API. Users can navigate back to the balance page after completing the transfer or canceling the operation. Error messages are displayed for invalid inputs or failed transfers.
- * @author Colin
  */
 
 import React, { useState, useEffect } from 'react';
@@ -36,7 +35,6 @@ const TransferPage: React.FC = () => {
   /**
    * @brief Fetches the user's accounts from Firestore.
    * @details This function retrieves the user's accounts and sets the default selected account. If an error occurs, it displays an error message.
-   * @author Colin
    */
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -64,7 +62,6 @@ const TransferPage: React.FC = () => {
    * @details This function checks if the provided email address matches a valid email format.
    * @param email The email address to validate.
    * @returns True if the email is valid, false otherwise.
-   * @author Colin
    */
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -74,7 +71,6 @@ const TransferPage: React.FC = () => {
   /**
    * @brief Handles the fund transfer process.
    * @details This function validates the input fields, fetches the recipient's data from the backend, and processes the transfer. It displays success or error messages based on the result.
-   * @author Colin
    */
   const handleTransfer = async () => {
     if (!selectedAccount || !recipientEmail || !amount || parseFloat(amount) <= 0) {
@@ -82,38 +78,15 @@ const TransferPage: React.FC = () => {
       return;
     }
 
-    if (!isValidEmail(recipientEmail)) {
-      setMessage('Please enter a valid email address.');
-      return;
-    }
-
-    setIsSubmitting(true);
-
     try {
-      // Fetch recipient data by email
-      const recipientResponse = await fetch(`http://localhost:5000/account/user/by-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: recipientEmail }),
-      });
-
-      if (!recipientResponse.ok) {
-        const errorText = await recipientResponse.text();
-        throw new Error(`Error: ${recipientResponse.status} - ${errorText}`);
-      }
-
-      const recipientData = await recipientResponse.json();
-
-      // Proceed with the transfer
       const transferResponse = await fetch('http://localhost:5000/account/transfer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          senderUid: currentUser?.uid,
-          senderAccountId: selectedAccount,
-          recipientUid: recipientData.uid,
-          recipientAccountId: 'checking',
-          amount: parseFloat(amount),
+          senderUid: currentUser?.uid, // Ensure this is not null or undefined
+          senderAccountId: selectedAccount, // Ensure this is selected
+          recipientEmail: recipientEmail.trim().toLowerCase(), // Normalize email
+          amount: parseFloat(amount), // Ensure this is a valid number
         }),
       });
 
@@ -126,8 +99,6 @@ const TransferPage: React.FC = () => {
     } catch (error: any) {
       console.error('Error during transfer:', error);
       setMessage(error.message || 'Error during transfer. Please try again.');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
