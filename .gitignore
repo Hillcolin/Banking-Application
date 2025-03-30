@@ -5,3 +5,6 @@ Backendd/.env
 crow/
 vcpkg
 firebase_cpp_sdk/
+bkg_x64/firebase-service-account.json
+Crow/bkg_x64/node_modules
+Backend/CMakeFiles
