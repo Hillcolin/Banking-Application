@@ -1,0 +1,6 @@
+# .gitignore
+.env
+Frontend/.env
+Backendd/.env
+crow/
+vcpkg
