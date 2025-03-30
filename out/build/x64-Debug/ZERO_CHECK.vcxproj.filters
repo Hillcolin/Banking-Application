@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\hillc\OneDrive\Documents\GitHub\Banking-Application\out\build\x64-Debug\CMakeFiles\8ae87b05c95ba3d58a753710fa15a69d\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B9C49460-0639-3E71-A446-92A5D8E0DB48}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

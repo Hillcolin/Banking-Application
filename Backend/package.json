@@ -1,0 +1,11 @@
+{
+  "name": "backend",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "cmake -B build -S . && cmake --build build && .\\build\\Debug\\main"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
