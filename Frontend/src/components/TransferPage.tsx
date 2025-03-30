@@ -60,7 +60,6 @@ const TransferPage: React.FC = () => {
     }
 
     if (isInternalTransfer) {
-      // Internal transfer validation
       if (!recipientAccount) {
         setMessage('Please select a recipient account.');
         return;
@@ -71,7 +70,6 @@ const TransferPage: React.FC = () => {
         return;
       }
     } else {
-      // External transfer validation
       if (!recipientEmail || !isValidEmail(recipientEmail)) {
         setMessage('Please enter a valid recipient email.');
         return;
@@ -84,17 +82,15 @@ const TransferPage: React.FC = () => {
       let transferPayload;
 
       if (isInternalTransfer) {
-        // Internal transfer payload
         transferPayload = {
           senderUid: currentUser?.uid,
           senderAccountId: selectedAccount,
-          recipientUid: currentUser?.uid, // Same user for internal transfer
+          recipientUid: currentUser?.uid,
           recipientAccountId: recipientAccount,
           amount: parseFloat(amount),
           isInternalTransfer: true,
         };
       } else {
-        // External transfer payload
         const recipientResponse = await fetch(`http://localhost:5000/account/user/email`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -117,7 +113,7 @@ const TransferPage: React.FC = () => {
           senderUid: currentUser?.uid,
           senderAccountId: selectedAccount,
           recipientUid: recipientData.uid,
-          recipientAccountId: 'checking', // Default recipient account
+          recipientAccountId: 'checking',
           amount: parseFloat(amount),
           isInternalTransfer: false,
         };
@@ -136,11 +132,18 @@ const TransferPage: React.FC = () => {
         throw new Error(errorData.message || 'Failed to transfer funds.');
       }
 
-      setMessage('Transfer successful!');
+      const transferData = await transferResponse.json();
+
+      // Update the message to include the sender's email
+      setMessage(
+        `Transfer successful! Amount: $${parseFloat(amount).toFixed(
+          2
+        )}. Sent by: ${transferData.senderEmail}.`
+      );
 
       // Refresh account data after a successful transfer
       const userAccounts = await fetchOrInitializeUserData(currentUser?.uid, currentUser?.email);
-      setAccounts(userAccounts); // Update the accounts state with the refreshed data
+      setAccounts(userAccounts);
     } catch (error: any) {
       console.error('Error during transfer:', error);
       setMessage(error.message || 'Error during transfer. Please try again.');
