@@ -92,7 +92,7 @@ const BalancePage: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <h1>Welcome, {currentUser?.displayName || 'User'}!</h1>
+      <h1>Welcome!</h1>
 
       <section className="account-summary">
         <h2>Account Summary</h2>

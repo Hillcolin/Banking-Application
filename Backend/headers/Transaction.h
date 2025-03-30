@@ -11,7 +11,7 @@ public:
     int getAccountID() const;
     std::string getTransactionType() const;
     double getAmount() const;
-    std::string getDate() const;  // Add this method declaration
+    std::string getDate() const;
 
     static std::vector<Transaction> getTransactions(int accountID);
 
@@ -20,5 +20,5 @@ private:
     int accountID;
     std::string transactionType;
     double amount;
-    std::string date;  // Add this member variable
+    std::string date;
 };

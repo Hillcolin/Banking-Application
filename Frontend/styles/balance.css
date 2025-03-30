@@ -117,3 +117,24 @@ h2 {
   margin-bottom: 20px;
   margin-top: 20px;
 }
+/* Logout Button */
+.logout-button {
+	display: block;
+	background-color: #007bff; /* Blue background */
+	color: white;
+	text-align: center;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	text-decoration: none;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+	width: 80%; /* Match the width of other components */
+	margin: 20px auto; /* Center the button horizontally */
+  }
+  
+  .logout-button:hover {
+	background-color: #0056b3; /* Darker blue on hover */
+	transform: scale(1.05);
+  }

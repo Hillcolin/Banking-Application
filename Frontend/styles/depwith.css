@@ -70,3 +70,83 @@ button:hover {
   font-size: 1rem;
   color: green;
 }
+/* Toggle Buttons */
+.toggle-buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+  }
+  
+  .toggle-button {
+	flex: 1;
+	padding: 10px 20px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	background-color: #f9f9f9; /* Neutral background for unselected buttons */
+	color: #333; /* Neutral text color */
+	cursor: pointer;
+	transition: background-color 0.3s ease, color 0.3s ease;
+	text-align: center;
+  }
+  
+  .toggle-button.active {
+	background-color: #4caf50; /* Green background for selected button */
+	color: white; /* White text for selected button */
+	border-color: #4caf50;
+  }
+  
+  .toggle-button:not(.active):hover {
+	background-color: #e0e0e0; /* Slightly darker background on hover for unselected buttons */
+  }
+  
+  /* Card Layout */
+  .card {
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 15px;
+	margin-bottom: 20px;
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card h2 {
+	margin-top: 0;
+  }
+  
+  /* Transfer Button */
+  .transfer-button {
+	background-color: #4caf50;
+	color: white;
+	padding: 10px 20px;
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+  }
+  
+  .transfer-button:hover {
+	background-color: #45a049;
+  }
+  
+  .transfer-button:disabled {
+	background-color: #cccccc;
+	cursor: not-allowed;
+  }
+  
+  /* Back Button */
+	.back-button {
+	margin-top: 10px;
+	background-color: #6c757d; /* Gray background */
+	color: white;
+	padding: 10px 20px;
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+  }
+  
+  .back-button:hover {
+	background-color: #5a6268; /* Darker gray on hover */
+  }

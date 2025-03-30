@@ -21,7 +21,7 @@
 #include "Account.h"
 #include "Transaction.h"
 #include "SavingsAccount.h"
-#include "CheckingsAccount.h"
+#include "CheckingAccount.h"
 
 using namespace std;
 
@@ -32,23 +32,22 @@ firebase::auth::Auth* auth;
 /**
  * @brief Initializes Firebase.
  * @details This function initializes Firebase using environment variables for configuration.
- * It sets up the Firebase app, database, and authentication instances.
  */
 void initializeFirebase() {
-        ifstream envFile(".env");
-        if (envFile.is_open()) {
-            string line;
-            while (getline(envFile, line)) {
-                auto delimiterPos = line.find('=');
-                auto name = line.substr(0, delimiterPos);
-                auto value = line.substr(delimiterPos + 1);
-                _putenv_s(name.c_str(), value.c_str());
-            }
-            envFile.close();
-        } else {
-            cerr << "Error: .env file not found." << endl;
-            exit(EXIT_FAILURE);
+    ifstream envFile(".env");
+    if (envFile.is_open()) {
+        string line;
+        while (getline(envFile, line)) {
+            auto delimiterPos = line.find('=');
+            auto name = line.substr(0, delimiterPos);
+            auto value = line.substr(delimiterPos + 1);
+            _putenv_s(name.c_str(), value.c_str());
         }
+        envFile.close();
+    } else {
+        cerr << "Error: .env file not found." << endl;
+        exit(EXIT_FAILURE);
+    }
 
     firebase::AppOptions options;
     char* project_id;
@@ -72,18 +71,24 @@ void initializeFirebase() {
 }
 
 /**
- * @brief Converts a Firebase DataSnapshot to JSON.
- * @details This function iterates over the children of a Firebase DataSnapshot and converts
- * them into a Crow JSON object.
- * @param snapshot The Firebase DataSnapshot to convert.
- * @returns A Crow JSON object representing the snapshot data.
+ * @brief Checks if a user is locked out.
+ * @param userId The ID of the user.
+ * @returns True if the user is locked out, false otherwise.
  */
-crow::json::wvalue convertSnapshotToJson(const firebase::database::DataSnapshot& snapshot) {
-    crow::json::wvalue json;
-    for (const auto& child : snapshot.children()) {
-        json[child.key()] = child.value().AsString().string_value();
-    }
-    return json;
+bool isUserLockedOut(const string& userId) {
+    auto userRef = database->GetReference("users").Child(userId).Child("lockoutEndTime");
+    auto future = userRef.GetValue();
+    future.OnCompletion([](const firebase::Future<firebase::database::DataSnapshot>& completedFuture) {
+        if (completedFuture.error() == firebase::database::kErrorNone) {
+            auto snapshot = *completedFuture.result();
+            if (snapshot.exists()) {
+                long long lockoutEndTime = snapshot.value().int64_value();
+                return lockoutEndTime > time(nullptr); // Check if lockoutEndTime is in the future
+            }
+        }
+        return false;
+    });
+    return false;
 }
 
 /**
@@ -94,51 +99,67 @@ crow::json::wvalue convertSnapshotToJson(const firebase::database::DataSnapshot&
  */
 void linkRoutes(crow::SimpleApp& app) {
     // Endpoint to get user data
-    CROW_ROUTE(app, "/api/user/<int>")
-    ([](int userID) {
-        auto userRef = database->GetReference("users").Child(to_string(userID));
-        auto future = userRef.GetValue();
-        future.OnCompletion([](const firebase::Future<firebase::database::DataSnapshot>& completedFuture) {
-            if (completedFuture.error() == firebase::database::kErrorNone) {
-                auto snapshot = *completedFuture.result();
-                crow::json::wvalue response = convertSnapshotToJson(snapshot);
-                return crow::response(response);
-            } else {
-                return crow::response(404, "User not found.");
-            }
-        });
+    CROW_ROUTE(app, "/api/user/<string>")
+    ([](const string& userId) {
+        if (isUserLockedOut(userId)) {
+            return crow::response(403, "User is locked out.");
+        }
+
+        User user(userId);
+        if (!user.loadFromDatabase(database)) {
+            return crow::response(404, "User not found.");
+        }
+
+        return crow::response(user.toJson());
     });
 
     // Endpoint to get account data
-    CROW_ROUTE(app, "/api/account/<int>")
-    ([](int accountID) {
-        auto accountRef = database->GetReference("accounts").Child(to_string(accountID));
-        auto future = accountRef.GetValue();
-        future.OnCompletion([](const firebase::Future<firebase::database::DataSnapshot>& completedFuture) {
-            if (completedFuture.error() == firebase::database::kErrorNone) {
-                auto snapshot = *completedFuture.result();
-                crow::json::wvalue response = convertSnapshotToJson(snapshot);
-                return crow::response(response);
-            } else {
-                return crow::response(404, "Account not found.");
-            }
-        });
+    CROW_ROUTE(app, "/api/account/<string>")
+    ([](const string& accountId) {
+        Account account(accountId);
+        if (!account.loadFromDatabase(database)) {
+            return crow::response(404, "Account not found.");
+        }
+
+        return crow::response(account.toJson());
     });
 
-    // Endpoint to get recent transactions
-    CROW_ROUTE(app, "/api/account/<int>/transactions")
-    ([](int accountID) {
-        auto transactionsRef = database->GetReference("transactions").Child(to_string(accountID));
-        auto future = transactionsRef.GetValue();
-        future.OnCompletion([](const firebase::Future<firebase::database::DataSnapshot>& completedFuture) {
-            if (completedFuture.error() == firebase::database::kErrorNone) {
-                auto snapshot = *completedFuture.result();
-                crow::json::wvalue response = convertSnapshotToJson(snapshot);
-                return crow::response(response);
-            } else {
-                return crow::response(404, "Transactions not found.");
-            }
-        });
+    // Endpoint to transfer funds
+    CROW_ROUTE(app, "/api/transfer").methods("POST"_method)
+    ([](const crow::request& req) {
+        auto body = crow::json::load(req.body);
+        if (!body) {
+            return crow::response(400, "Invalid JSON.");
+        }
+
+        string senderId = body["senderId"].s();
+        string recipientId = body["recipientId"].s();
+        double amount = body["amount"].d();
+
+        if (isUserLockedOut(senderId)) {
+            return crow::response(403, "Sender is locked out.");
+        }
+
+        CheckingAccount sender(senderId);
+        CheckingAccount recipient(recipientId);
+
+        if (!sender.loadFromDatabase(database) || !recipient.loadFromDatabase(database)) {
+            return crow::response(404, "Sender or recipient account not found.");
+        }
+
+        if (!sender.withdraw(amount)) {
+            return crow::response(400, "Insufficient funds.");
+        }
+
+        recipient.deposit(amount);
+
+        sender.saveToDatabase(database);
+        recipient.saveToDatabase(database);
+
+        Transaction transaction(senderId, recipientId, amount, "Transfer");
+        transaction.saveToDatabase(database);
+
+        return crow::response(200, "Transfer successful.");
     });
 
     // Serve static files for the React frontend
