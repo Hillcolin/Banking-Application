@@ -21,7 +21,7 @@
 #include "Account.h"
 #include "Transaction.h"
 #include "SavingsAccount.h"
-#include "CheckingAccount.h"
+#include "CheckingsAccount.h"
 
 using namespace std;
 
